@@ -1,0 +1,10 @@
+{
+  "app": { "title": "Gesture Synth Pro", "tagline": "make music with your hands" },
+  "nav": { "play": "Play Now", "tutorial": "Tutorial", "multiplayer": "Multiplayer", "recordings": "Recordings", "settings": "Settings" },
+  "landing": { "hero_desc": "Interactive musical instrument using your camera.", "play_now": "Play Now", "tutorial": "Tutorial" },
+  "play": { "camera_loading": "Accessing camera...", "camera_denied": "Camera access denied", "camera_error": "Camera not available", "no_hands": "Raise your fingers to start", "chord": "Chord", "volume": "Volume", "filter": "Filter", "synth": "Synth", "scale": "Scale", "effects": "Effects", "record": "Record", "stop": "Stop" },
+  "tutorial": { "title": "Quick Tutorial", "step1": "Make your first chord", "step2": "Change the chord", "step3": "Add expression", "prev": "Back", "next": "Next", "done": "Start Playing" },
+  "multiplayer": { "create_room": "Create Room", "join_room": "Join Room", "room_code": "Room Code", "players": "Players", "start": "Start Jam", "end": "End Session", "leave": "Leave" },
+  "recordings": { "title": "Recordings", "empty": "No recordings yet", "record": "Record", "play": "Play", "delete": "Delete", "download": "Download" },
+  "settings": { "title": "Settings", "audio": "Audio", "camera": "Camera", "appearance": "Appearance", "gesture": "Gesture", "language": "Language", "reset": "Reset to Default" }
+}
