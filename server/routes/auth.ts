@@ -19,7 +19,7 @@ router.post('/register', async (req: Request, res: Response) => {
     const body = registerSchema.parse(req.body);
     const hash = await bcrypt.hash(body.password, 12);
     const result = await pool.query(
-      'INSERT INTO users (username, email, password_hash) VALUES (, , ) RETURNING id, username, email',
+      'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id, username, email',
       [body.username, body.email, hash]
     );
     const user = result.rows[0];
@@ -36,7 +36,7 @@ router.post('/register', async (req: Request, res: Response) => {
 router.post('/login', async (req: Request, res: Response) => {
   try {
     const body = loginSchema.parse(req.body);
-    const result = await pool.query('SELECT * FROM users WHERE email = ', [body.email]);
+    const result = await pool.query('SELECT * FROM users WHERE email = $1', [body.email]);
     if (!result.rows.length) {
       res.status(401).json({ success: false, data: null, error: 'Invalid credentials' });
       return;
@@ -54,7 +54,7 @@ router.post('/login', async (req: Request, res: Response) => {
   }
 });
 router.get('/me', authMiddleware, async (req: Request, res: Response) => {
-  const result = await pool.query('SELECT id, username, email, settings, created_at FROM users WHERE id = ', [req.userId]);
+  const result = await pool.query('SELECT id, username, email, settings, created_at FROM users WHERE id = $1', [req.userId]);
   if (!result.rows.length) {
     res.status(404).json({ success: false, data: null, error: 'User not found' });
     return;

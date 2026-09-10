@@ -1,15 +1,12 @@
-import { type ReactNode, useState } from 'react';
-interface TooltipProps { content: string; children: ReactNode; position?: 'top' | 'bottom'; }
-export default function Tooltip({ content, children, position = 'top' }: TooltipProps) {
-  const [show, setShow] = useState(false);
+import { type ReactNode } from 'react';
+interface TooltipProps { content: string; children: ReactNode; }
+export default function Tooltip({ content, children }: TooltipProps) {
   return (
-    <div className="relative inline-block" onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
+    <div className="relative group inline-flex">
       {children}
-      {show && (
-        <div className={}>
-          {content}
-        </div>
-      )}
+      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs bg-neutral-800 text-neutral-100 rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+        {content}
+      </div>
     </div>
   );
 }

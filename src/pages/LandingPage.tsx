@@ -1,18 +1,43 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/ui/Button';
+
 export default function LandingPage() {
-  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const n = useNavigate();
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center px-4 text-center">
-      <div className="max-w-3xl mx-auto space-y-8">
-        <p className="text-primary-400 text-sm font-medium tracking-widest uppercase">Gesture Synth Pro</p>
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">make music with your hands</h1>
-        <p className="text-neutral-400 text-lg max-w-xl mx-auto">Interactive musical instrument using your camera.</p>
-        <div className="flex gap-4 justify-center">
-          <button onClick={() => navigate('/play')} className="bg-primary-600 hover:bg-primary-500 text-white font-semibold px-8 py-3.5 rounded-md">Play Now</button>
-          <button onClick={() => navigate('/tutorial')} className="border border-neutral-700 hover:border-neutral-500 text-neutral-200 font-semibold px-8 py-3.5 rounded-md">Tutorial</button>
-        </div>
+    <div className="hero-mesh min-h-dvh flex flex-col items-center justify-center px-4 text-center">
+      <h1 className="text-5xl md:text-7xl font-bold gradient-text mb-6">
+        {t('app.title')}
+      </h1>
+      <p className="text-lg md:text-xl text-neutral-400 mb-4 max-w-md">
+        {t('landing.hero_desc')}
+      </p>
+      <p className="text-2xl md:text-3xl font-light text-neutral-300 mb-10">
+        {t('app.tagline')}
+      </p>
+      <div className="flex gap-4">
+        <Button size="lg" onClick={() => n('/play')}>{t('landing.play_now')}</Button>
+        <Button variant="secondary" size="lg" onClick={() => n('/tutorial')}>{t('landing.tutorial')}</Button>
+      </div>
+      <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl">
+        {[
+          { icon: '🎹', label: t('nav.play') },
+          { icon: '🌐', label: t('nav.multiplayer') },
+          { icon: '📹', label: t('nav.recordings') },
+          { icon: '🎛️', label: t('play.effects') },
+        ].map((f) => (
+          <div key={f.label} className="glass rounded-xl p-6 card-lift text-center">
+            <div className="text-3xl mb-2">{f.icon}</div>
+            <div className="text-sm text-neutral-300">{f.label}</div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-16 flex gap-8 text-sm text-neutral-500">
+        <span>1. {t('play.camera_loading')}</span>
+        <span>2. {t('play.no_hands')}</span>
+        <span>3. {t('tutorial.step1')}</span>
       </div>
     </div>
   );
 }
-ENDOFF

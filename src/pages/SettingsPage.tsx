@@ -1,53 +1,86 @@
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '../stores/settingsStore';
+import { useAudioStore } from '../stores/audioStore';
 import Slider from '../components/ui/Slider';
 import Toggle from '../components/ui/Toggle';
-import Select from '../components/ui/Select';
 import Button from '../components/ui/Button';
-const LANGUAGES = [
-  { value: 'en', label: 'English' }, { value: 'id', label: 'Bahasa Indonesia' },
-  { value: 'ja', label: 'Japanese' }, { value: 'es', label: 'Spanish' },
-  { value: 'fr', label: 'French' }, { value: 'de', label: 'German' },
-  { value: 'ko', label: 'Korean' }, { value: 'zh', label: 'Mandarin' },
-];
+
 export default function SettingsPage() {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
   const { language, cameraResolution, mirrorCamera, showLandmarks, lowLightBoost, chordNotation, showNoteNames, gestureSensitivity, tiltThreshold, setLanguage, setSetting } = useSettingsStore();
-  const handleLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    i18n.changeLanguage(lang);
-  };
+  const { volume, setVolume } = useAudioStore();
   return (
-    <div className="min-h-dvh bg-neutral-950 p-4">
-      <div className="max-w-lg mx-auto space-y-8 pt-8">
-        <div className="flex items-center gap-4">
-          <button onClick={() => navigate(-1)} className="text-neutral-400 hover:text-neutral-200">
-            <img src="icons/arrow-left.svg" alt="" className="w-5 h-5" />
-          </button>
-          <h1 className="text-xl font-bold">{t('settings.title')}</h1>
-        </div>
-        <section className="space-y-4">
-          <h2 className="text-sm font-semibold text-primary-400 uppercase tracking-wider">{t('settings.audio')}</h2>
-          <Slider label="Gesture Sensitivity" value={gestureSensitivity * 100} onChange={(v) => setSetting('gestureSensitivity', v / 100)} />
-          <Slider label="Tilt Threshold" value={tiltThreshold} min={10} max={60} onChange={(v) => setSetting('tiltThreshold', v)} />
+    <div className="min-h-dvh px-4 py-8 max-w-xl mx-auto">
+      <h2 className="text-3xl font-bold mb-8">{t('settings.title')}</h2>
+      <div className="flex flex-col gap-8">
+        <section>
+          <h3 className="text-lg font-semibold text-neutral-300 mb-4">{t('settings.audio')}</h3>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-neutral-400 w-32">{t('play.volume')}</span>
+            <Slider value={volume} onChange={setVolume} min={0} max={1} step={0.01} />
+          </div>
         </section>
-        <section className="space-y-4">
-          <h2 className="text-sm font-semibold text-primary-400 uppercase tracking-wider">{t('settings.camera')}</h2>
-          <Select label="Resolution" options={[{ value: '720p', label: '720p' }, { value: '1080p', label: '1080p' }]} value={cameraResolution} onChange={(e) => setSetting('cameraResolution', e.target.value as '720p' | '1080p')} />
-          <div className="flex items-center justify-between"><span className="text-sm">Mirror Camera</span><Toggle checked={mirrorCamera} onToggle={(v) => setSetting('mirrorCamera', v)} /></div>
-          <div className="flex items-center justify-between"><span className="text-sm">Show Landmarks</span><Toggle checked={showLandmarks} onToggle={(v) => setSetting('showLandmarks', v)} /></div>
-          <div className="flex items-center justify-between"><span className="text-sm">Low Light Boost</span><Toggle checked={lowLightBoost} onToggle={(v) => setSetting('lowLightBoost', v)} /></div>
+        <section>
+          <h3 className="text-lg font-semibold text-neutral-300 mb-4">{t('settings.camera')}</h3>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-neutral-400">{t('settings.camera')}</span>
+              <select value={cameraResolution} onChange={(e) => setSetting('cameraResolution', e.target.value as '720p' | '1080p')} className="bg-neutral-800 border border-neutral-700 rounded-md px-3 py-1.5 text-sm text-neutral-200">
+                <option value="720p">720p</option>
+                <option value="1080p">1080p</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-neutral-400">Mirror</span>
+              <Toggle checked={mirrorCamera} onChange={(v) => setSetting('mirrorCamera', v)} />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-neutral-400">Landmarks</span>
+              <Toggle checked={showLandmarks} onChange={(v) => setSetting('showLandmarks', v)} />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-neutral-400">Low Light</span>
+              <Toggle checked={lowLightBoost} onChange={(v) => setSetting('lowLightBoost', v)} />
+            </div>
+          </div>
         </section>
-        <section className="space-y-4">
-          <h2 className="text-sm font-semibold text-primary-400 uppercase tracking-wider">{t('settings.appearance')}</h2>
-          <Select label={t('settings.language')} options={LANGUAGES} value={language} onChange={handleLanguage} />
-          <Select label="Chord Notation" options={[{ value: 'CDEFGAB', label: 'CDEFGAB' }, { value: 'DoReMi', label: 'Do Re Mi' }]} value={chordNotation} onChange={(e) => setSetting('chordNotation', e.target.value as 'CDEFGAB' | 'DoReMi')} />
-          <div className="flex items-center justify-between"><span className="text-sm">Show Note Names</span><Toggle checked={showNoteNames} onToggle={(v) => setSetting('showNoteNames', v)} /></div>
+        <section>
+          <h3 className="text-lg font-semibold text-neutral-300 mb-4">{t('settings.appearance')}</h3>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-neutral-400">{t('settings.language')}</span>
+              <select value={language} onChange={(e) => { setLanguage(e.target.value); i18n.changeLanguage(e.target.value); }} className="bg-neutral-800 border border-neutral-700 rounded-md px-3 py-1.5 text-sm text-neutral-200">
+                <option value="en">English</option>
+                <option value="id">Bahasa Indonesia</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-neutral-400">Notation</span>
+              <select value={chordNotation} onChange={(e) => setSetting('chordNotation', e.target.value as 'CDEFGAB' | 'DoReMi')} className="bg-neutral-800 border border-neutral-700 rounded-md px-3 py-1.5 text-sm text-neutral-200">
+                <option value="CDEFGAB">CDEFGAB</option>
+                <option value="DoReMi">DoReMi</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-neutral-400">Note Names</span>
+              <Toggle checked={showNoteNames} onChange={(v) => setSetting('showNoteNames', v)} />
+            </div>
+          </div>
         </section>
-        <Button variant="secondary" className="w-full">Reset to Default</Button>
+        <section>
+          <h3 className="text-lg font-semibold text-neutral-300 mb-4">{t('settings.gesture')}</h3>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-neutral-400 w-32">Sensitivity</span>
+              <Slider value={gestureSensitivity} onChange={(v) => setSetting('gestureSensitivity', v)} min={0} max={1} step={0.01} />
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-neutral-400 w-32">Tilt Threshold</span>
+              <Slider value={tiltThreshold} onChange={(v) => setSetting('tiltThreshold', v)} min={5} max={90} step={1} />
+            </div>
+          </div>
+        </section>
+        <Button variant="secondary" onClick={() => {}}>{t('settings.reset')}</Button>
       </div>
     </div>
   );

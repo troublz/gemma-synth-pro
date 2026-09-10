@@ -6,6 +6,7 @@ import TutorialPage from './pages/TutorialPage';
 import MultiplayerPage from './pages/MultiplayerPage';
 import RecordingsPage from './pages/RecordingsPage';
 import SettingsPage from './pages/SettingsPage';
+import PresetBrowserPage from './pages/PresetBrowserPage';
 import './i18n';
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/multiplayer" element={<MultiplayerPage />} />
         <Route path="/recordings" element={<RecordingsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/presets" element={<PresetBrowserPage />} />
       </Routes>
     </AppShell>
   );

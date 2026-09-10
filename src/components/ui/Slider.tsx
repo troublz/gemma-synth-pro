@@ -1,24 +1,17 @@
-import { type InputHTMLAttributes, useCallback } from 'react';
-interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange'> {
-  value: number;
-  min?: number;
-  max?: number;
-  step?: number;
-  onChange: (value: number) => void;
-  label?: string;
-}
-export default function Slider({ value, min = 0, max = 100, step = 1, onChange, label, className = '', ...props }: SliderProps) {
+interface SliderProps { value: number; onChange: (v: number) => void; min: number; max: number; step: number; disabled?: boolean; }
+export default function Slider({ value, onChange, min, max, step, disabled }: SliderProps) {
   const pct = ((value - min) / (max - min)) * 100;
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => onChange(Number(e.target.value)), [onChange]);
   return (
-    <div className={'relative w-full ' + className}>
-      {label && <label className="block text-xs text-neutral-400 mb-1">{label}</label>}
-      <input type="range" min={min} max={max} step={step} value={value} onChange={handleChange}
-        className="w-full h-1.5 bg-neutral-700 rounded-full appearance-none cursor-pointer accent-primary-500"
-        style={{ background: 'linear-gradient(to right, #0891b2 0%, #0891b2 ' + pct + '%, #334155 ' + pct + '%, #334155 100%)' }}
-        {...props}
+    <div className="relative flex-1 h-6 flex items-center">
+      <div className="w-full h-1.5 bg-neutral-700 rounded-full overflow-hidden">
+        <div className="h-full bg-primary-500 rounded-full transition-all duration-75" style={{ width: pct + '%' }} />
+      </div>
+      <input
+        type="range" min={min} max={max} step={step} value={value} disabled={disabled}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
       />
+      <div className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-md pointer-events-none" style={{ left: 'calc(' + pct + '% - 8px)' }} />
     </div>
   );
 }
-ENDOFF

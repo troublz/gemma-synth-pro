@@ -28,4 +28,3 @@ export function getChordNotes(
   const chordName = NOTE_NAMES[root % 12] + (isMajor ? '' : 'm') + (quality >= 3 ? '7' : '') + (quality >= 4 ? 'dim' : '');
   return { notes: noteNames, chordName };
 }
-CHORD
